@@ -9,25 +9,21 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
-@SpringBootApplication
 @RestController
-public class Application {
-
+@RequestMapping("/messages")
+public class MessageController {
     @Autowired
     private MessageRepository messageRepository;
 
-    public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
-    }
-
-    @GetMapping("/messages")
+    @GetMapping
     public Page<Message> getMessages(@RequestParam(defaultValue = "0") int page,
-                                     @RequestParam(defaultValue = "10") int size) {
-        return messageRepository.findAll(PageRequest.of(page, size, Sort.by("createdAt").descending()));
+                                    @RequestParam(defaultValue = "10") int size,
+                                    @RequestParam String groupId) {
+        return messageRepository.findByGroupId(groupId, PageRequest.of(page, size));
     }
 
-    @PostMapping("/messages")
-    public Message postMessage(@Valid @RequestBody Message message) {
+    @PostMapping
+    public Message createMessage(@RequestBody Message message) {
         return messageRepository.save(message);
     }
 }
