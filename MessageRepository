@@ -1,0 +1,3 @@
+public interface MessageRepository extends MongoRepository<Message, String> {
+    Page<Message> findByGroupId(String groupId, Pageable pageable);
+}
