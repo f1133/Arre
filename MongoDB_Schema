@@ -1,0 +1,35 @@
+{
+    _id: ObjectId, 
+    groupId: String, // ID of the group the message belongs to
+    senderId: String, // ID of the sender of the message
+    message: String, // The message text
+    timestamp: Date, // Timestamp of when the message was sent
+    type: String, // Type of the message (text, image, video, audio, gif, sticker)
+    media: { // contains the url or binary data of the media
+        url: String,
+        data: Binary
+    },
+    location: { // Optional location data if the message contains location(Live Location)
+        latitude: Number,
+        longitude: Number,
+        name: String
+    },
+    replies: [
+        {
+            _id: ObjectId,
+            senderId: String,
+            message: String,
+            timestamp: Date,
+            type: String, // Type of the message (text, image, video, audio, gif, sticker)
+            media: { // contains the url or binary data of the media
+                url: String,
+                data: Binary
+            },
+            location: { // Optional location data if the message contains location
+                latitude: Number,
+                longitude: Number,
+                name: String
+            }
+        }
+    ]
+}
