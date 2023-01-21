@@ -1,29 +1,29 @@
-
-// I'm versed with SpringBoot so my Controller is in SpringBoot Hope that's not a problem
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
 
+@SpringBootApplication
 @RestController
-@RequestMapping("/messages")
-public class MessageController {
-    @Autowired
-    private MessageRepository messageRepository;
+public class Application {
 
-    @GetMapping
-    public Page<Message> getMessages(@RequestParam(defaultValue = "0") int page,
-                                    @RequestParam(defaultValue = "10") int size,
-                                    @RequestParam String groupId) {
-        return messageRepository.findByGroupId(groupId, PageRequest.of(page, size));
+    private List<String> messages = new ArrayList<>();
+
+    public static void main(String[] args) {
+        SpringApplication.run(Application.class, args);
     }
 
-    @PostMapping
-    public Message createMessage(@RequestBody Message message) {
-        return messageRepository.save(message);
+    @GetMapping("/messages/{page}")
+    public List<String> getMessages(@PathVariable int page) {
+        int start = (page - 1) * 10;
+        int end = start + 10;
+        return messages.subList(start, end);
+    }
+
+    @PostMapping("/messages")
+    public void postMessage(@RequestBody String message) {
+        messages.add(message);
     }
 }
